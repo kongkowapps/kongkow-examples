@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kongkow Mini App Example</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+            background-color: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+        }
+
+        button {
+            background-color: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #fff);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+    <!-- In a real app, you would install via npm and bundle it. For this example, we assume it's hosted or copied. -->
+    <script src="../../packages/kongkow-miniapp-sdk/src/index.js"></script>
+</head>
+
+<body>
+    <h1>Hello, Mini App!</h1>
+    <p>This is a simple Mini App running inside Kongkow.</p>
+
+    <div id="userInfo">Loading user info...</div>
+
+    <button onclick="sendDataBack()">Send Data to Bot</button>
+    <button onclick="closeApp()">Close App</button>
+
+    <script>
+        // verify SDK is loaded
+        if (window.Kongkow) {
+            console.log("Kongkow SDK initialized");
+            // Signal ready
+            Kongkow.ready();
+        } else {
+            document.body.innerHTML += "<p style='color:red'>SDK Error: Kongkow object not found</p>";
+        }
+
+        function sendDataBack() {
+            Kongkow.sendData({
+                action: "clicked_hello",
+                timestamp: Date.now()
+            });
+            alert("Data sent! Check the bot chat.");
+        }
+
+        function closeApp() {
+            Kongkow.close();
+        }
+
+        // Example: Parsing query params from initData (URL parameters)
+        const params = new URLSearchParams(window.location.search);
+        const user = params.get('user');
+        if (user) {
+            document.getElementById('userInfo').innerText = `Welcome, ${user}!`;
+        } else {
+            document.getElementById('userInfo').innerText = "Welcome, Guest!";
+        }
+    </script>
+</body>
+
+</html>
